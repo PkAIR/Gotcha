@@ -28,3 +28,30 @@ it('Filling the reason', () => {
     // Filling reason
     cy.get('.textarea').type('test')    
 })
+
+it('Wait for file to be uploaded', () => {
+    cy.get('.fileupload-input').click()
+    // Set up request timeout?
+    cy.wait('.half_link')
+    
+    // Waiting for me to insert captcha
+    cy.wait(7000)
+})
+
+it('Going to the next step', () => {
+    cy.xpath('//a[text()="Отправить обращение"]').click()
+})
+
+it('Passing mailbox check', () => {
+    cy.xpath('//a[text()="Отправить код подтверждения"]').click()
+    // Waiting for code entry
+    cy.wait(7000)
+})
+
+it('Checking correctness for the report', () => {
+    cy.xpath('//label[text()="Корректность введенных данных подтверждаю"]').click()
+})
+
+it('Sending the report', () => {
+    cy.xpath('//span[text()="Отправить"]').click()
+})
