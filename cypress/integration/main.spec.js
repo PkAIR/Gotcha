@@ -26,26 +26,24 @@ describe('Sending new report', function() {
 
     it('Filling the reason', () => {
         // Filling reason
-        cy.get('.textarea').type('test')    
+        cy.get('.textarea').type('Temp reason')    
     })
 
     it('Wait for file to be uploaded', () => {
-        cy.get('.fileupload-input').click()
+        cy.get('#fileupload-input').click({force: true})
         // Set up request timeout?
-        cy.wait('.half_link')
+        cy.wait(10000)
+        
+        cy.get('.half_link')
         
         // Waiting for me to insert captcha
-        cy.wait(7000)
+        cy.wait(30000)
     })
-
-    it('Going to the next step', () => {
-        cy.xpath('//a[text()="Отправить обращение"]').click()
-    })
-
+    
     it('Passing mailbox check', () => {
-        cy.xpath('//a[text()="Отправить код подтверждения"]').click()
+        cy.get('#confirm_but').click()
         // Waiting for code entry
-        cy.wait(7000)
+        cy.wait(15000)
     })
 
     it('Checking correctness for the report', () => {
