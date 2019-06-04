@@ -1,4 +1,5 @@
 import 'cypress-xpath'
+
 describe('Sending new report', function() {
     it('Navigating to the Report side', () => {
         cy.visit('https://xn--90adear.xn--p1ai/request_main')
@@ -30,7 +31,7 @@ describe('Sending new report', function() {
     })
 
     it('Wait for file to be uploaded', () => {
-        cy.get('#fileupload-input').click({force: true})
+        cy.get('#fileupload-input').click()
         // Set up request timeout?
         cy.wait(10000)
         
