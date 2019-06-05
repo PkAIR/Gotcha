@@ -17,7 +17,7 @@ describe('Sending new report', function() {
             .select(data.its('region'), {force: true})
         cy.log('Region was set')
         cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
-            .select('(data.its('department')', {force: true})
+            .select(data.its('department'), {force: true})
         cy.log('Department was set too')        
     })
 
