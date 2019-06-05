@@ -1,6 +1,8 @@
 import 'cypress-xpath'
 
 describe('Sending new report', function() {
+    let data = cy.readFile("cypress/data/data.json") // as?
+    
     it('Navigating to the Report side', () => {
         cy.visit('https://xn--90adear.xn--p1ai/request_main')
         
@@ -12,22 +14,20 @@ describe('Sending new report', function() {
 
     it('Choosing region and department', () => {   
         cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
-            .select('78 г. Санкт-Петербург', {force: true})
+            .select(data.its('region'), {force: true})
         cy.log('Region was set')
         cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
-            .select('УГИБДД ГУ МВД России по г. Санкт-Петербургу и Ленинградской области', {force: true})
+            .select('(data.its('department')', {force: true})
         cy.log('Department was set too')        
     })
 
     it('Setting personal information', () => {
-        cy.get('#surname_check')
-            .type('Калюгин').should('have.value', 'Калюгин')
-        cy.get('#firstname_check')   
-            .type('Павел').should('have.value', 'Павел')
-        cy.get('#email_check').type('test.test@gmail.com')
+        cy.get('#surname_check').type(data.its('surname'))
+        cy.get('#firstname_check').type((data.its('name'))
+        cy.get('#email_check').type((data.its('email'))
         /*cy.xpath('//*[@name="region"]', {force: true})
             .select('г. Санкт-Петербург')*/
-        cy.get('#select2-event_region-ia-container').select('г. Санкт-Петербург')
+        cy.get('#select2-event_region-ia-container').select((data.its('placeOfAcc'))
     })
 
     it('Filling the reason', () => {
