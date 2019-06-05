@@ -4,15 +4,19 @@ describe('Sending new report', function() {
     it('Navigating to the Report side', () => {
         cy.visit('https://xn--90adear.xn--p1ai/request_main')
         
+        cy.log('Checkilng an agreement checkbox')
         cy.get('div.f-left.checkError > b > label').click()
+        cy.log('Going to the next step')
         cy.get('div.f-right.u-form > button').click()
     })
 
     it('Choosing region and department', () => {   
         cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
             .select('78 г. Санкт-Петербург', {force: true})
+        cy.log('Region was set')
         cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
             .select('УГИБДД ГУ МВД России по г. Санкт-Петербургу и Ленинградской области', {force: true})
+        cy.log('Department was set too')        
     })
 
     it('Setting personal information', () => {
@@ -23,32 +27,37 @@ describe('Sending new report', function() {
         cy.get('#email_check').type('test.test@gmail.com')
         /*cy.xpath('//*[@name="region"]', {force: true})
             .select('г. Санкт-Петербург')*/
+        cy.get('#select2-event_region-ia-container').select('г. Санкт-Петербург')
     })
 
     it('Filling the reason', () => {
-        // Filling reason
         cy.get('.textarea').type('Temp reason')    
     })
 
     it('Wait for file to be uploaded', () => {
         cy.get('#fileupload-input').click()
-        // Set up request timeout?
+        cy.log('Upload necessary file please')
         cy.wait(10000)
-        
+        cy.log('Waiting for file to be uploaded finally')        
         cy.get('.half_link')
         
-        // Waiting for me to insert captcha
-        cy.wait(30000)
+        cy.log('Attention! Please provide captcha. Waiting for your input')
+        cy.wait(15000)
     })
     
     it('Passing mailbox check', () => {
         cy.get('#confirm_but').click()
-        // Waiting for code entry
+        cy.log('Attention! Please provide e-mail confirmation code. Waiting for your input')
         cy.wait(15000)
+        cy.log('Confirming mail')
+        cy.get('#confirm_mail:first-child').click()
+        cy.log('Mail was confirmed')
+        // Add wait for mail confirmation received
     })
 
     it('Checking correctness for the report', () => {
-        cy.xpath('//label[text()="Корректность введенных данных подтверждаю"]').click()
+        //cy.xpath('//label[text()="Корректность введенных данных подтверждаю"]').click()
+        cy.get('#correct:first-child').click()
     })
 
     it('Sending the report', () => {
