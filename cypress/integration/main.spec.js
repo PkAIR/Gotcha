@@ -39,20 +39,16 @@ describe('Sending new report', function() {
         cy.log('Upload necessary file please')
         cy.wait(10000)
         cy.log('Waiting for file to be uploaded finally')        
-        cy.get('.half_link')
+        cy.get('.half_link', { timeout: 15000 })
         
         cy.log('Attention! Please provide captcha. Waiting for your input')
-        cy.wait(15000)
     })
     
     it('Passing mailbox check', () => {
-        cy.get('#confirm_but').click()
+        cy.get('#confirm_but:first-child', { timeout: 20000 }).click()
         cy.log('Attention! Please provide e-mail confirmation code. Waiting for your input')
-        cy.wait(15000)
-        cy.log('Confirming mail')
-        cy.get('#confirm_mail:first-child').click()
+        cy.get('#success > img', {timeout: 20000})
         cy.log('Mail was confirmed')
-        // Add wait for mail confirmation received
     })
 
     it('Checking correctness for the report', () => {
