@@ -35,9 +35,11 @@ describe('Sending new report', function() {
     })
 
     it('Wait for file to be uploaded', () => {
-        cy.get('#fileupload-input').click()
         cy.log('Upload necessary file please')
-        cy.wait(10000)
+        const fileName = 'data.json.pdf';
+        const fileType = 'application/json';
+        const fileInput = 'input[type=file]';
+        cy.uploadFile(fileName, fileType, fileInput)
         cy.log('Waiting for file to be uploaded finally')        
         cy.get('.half_link', { timeout: 15000 })
         
