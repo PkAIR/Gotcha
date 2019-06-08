@@ -16,7 +16,7 @@ describe('Sending new report', function() {
             cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
                 .select(obj.region, {force: true})
             cy.log('Region was set')
-            
+
             cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
                 .select(obj.department, {force: true})
             cy.log('Department was set too')  
@@ -28,8 +28,8 @@ describe('Sending new report', function() {
             cy.get('#surname_check').type(obj.surname)
             cy.get('#firstname_check').type(obj.name)
             cy.get('#email_check').type(obj.email)
-            /*cy.xpath('//*[@name="region"]', {force: true})
-                .select('г. Санкт-Петербург')*/
+
+            cy.log('Setting region of accident')
             cy.xpath('//span[contains(@id, "select2-event_region")]').click()
             cy.xpath('//input[@type="search"]').type(obj.placeOfAcc + '{enter}')
         })
