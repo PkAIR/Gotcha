@@ -16,6 +16,7 @@ describe('Sending new report', function() {
             cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
                 .select(obj.region, {force: true})
             cy.log('Region was set')
+            
             cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
                 .select(obj.department, {force: true})
             cy.log('Department was set too')  
