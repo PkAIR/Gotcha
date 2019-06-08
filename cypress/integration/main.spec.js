@@ -1,8 +1,6 @@
 import 'cypress-xpath'
 
 describe('Sending new report', function() {
-    let data = cy.readFile("cypress/data/data.json") // as?
-    
     it('Navigating to the Report side', () => {
         cy.visit('https://xn--90adear.xn--p1ai/request_main')
         
@@ -13,21 +11,27 @@ describe('Sending new report', function() {
     })
 
     it('Choosing region and department', () => {   
-        cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
-            .select(data.its('region'), {force: true})
-        cy.log('Region was set')
-        cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
-            .select(data.its('department'), {force: true})
-        cy.log('Department was set too')        
+        cy.fixture('data.json').then(obj => {
+            // prints an object to console
+            cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
+                .select(obj.region, {force: true})
+            cy.log('Region was set')
+            cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
+                .select(obj.department, {force: true})
+            cy.log('Department was set too')  
+        });           
     })
 
     it('Setting personal information', () => {
-        cy.get('#surname_check').type(data.its('surname'))
-        cy.get('#firstname_check').type((data.its('name'))
-        cy.get('#email_check').type((data.its('email'))
-        /*cy.xpath('//*[@name="region"]', {force: true})
-            .select('г. Санкт-Петербург')*/
-        cy.get('#select2-event_region-ia-container').select((data.its('placeOfAcc'))
+        cy.fixture('data.json').then(obj => {
+            cy.get('#surname_check').type(obj.surname)
+            cy.get('#firstname_check').type(obj.name)
+            cy.get('#email_check').type(obj.email)
+            /*cy.xpath('//*[@name="region"]', {force: true})
+                .select('г. Санкт-Петербург')*/
+            cy.xpath('//span[contains(@id, "select2-event_region")]').click()
+            cy.xpath('//input[@type="search"]').type(obj.placeOfAcc + '{enter}')
+        })
     })
 
     it('Filling the reason', () => {
