@@ -6,5 +6,7 @@
     "name": "Павел",
     "email": "test.test@gmail.com",
 
-    "placeOfAcc": "г. Санкт-Петербург"
+    "placeOfAcc": "г. Санкт-Петербург",
+
+    "reason": "Temp reason"
 }

@@ -26,7 +26,7 @@
 
 Cypress.Commands.add('uploadFile', (fileName, fileType = ' ', selector) => {
     return cy.get(selector).then(subject => {
-        cy.readFile('cypress/data/' + fileName, 'base64')
+        cy.fixture(fileName, 'base64')
             .then(Cypress.Blob.base64StringToBlob)
             .then(blob => {
                 const el = subject[0];
