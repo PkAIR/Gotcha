@@ -1,5 +1,7 @@
 import 'cypress-xpath'
 
+const elementTimeout = 90000
+
 describe('Sending new report', function() {
     it('Navigating to the Report side', () => {
         cy.visit('https://xn--90adear.xn--p1ai/request_main')
@@ -11,53 +13,56 @@ describe('Sending new report', function() {
     })
 
     it('Choosing region and department', () => {   
-        cy.fixture('data.json').then(obj => {
-            // prints an object to console
-            cy.xpath('(//td[contains(., "Регион")])[1]/ancestor::tr/td[2]/select')
-                .select(obj.region, {force: true})
+        cy.fixture('data.json').then(data => {
+            cy.xpath('//select[@name="region_code"]')
+                .select(data.region, {force: true})
             cy.log('Region was set')
 
-            cy.xpath('(//td[contains(., "Подразделение")])[1]/ancestor::tr/td[2]/select')
-                .select(obj.department, {force: true})
+            cy.get('#subunit_check')
+                .select(data.department, {force: true})
             cy.log('Department was set too')  
         });           
     })
 
     it('Setting personal information', () => {
-        cy.fixture('data.json').then(obj => {
-            cy.get('#surname_check').type(obj.surname)
-            cy.get('#firstname_check').type(obj.name)
-            cy.get('#email_check').type(obj.email)
+        cy.fixture('data.json').then(data => {
+            cy.get('#surname_check').type(data.surname)
+            cy.get('#firstname_check').type(data.name)
+            cy.get('#email_check').type(data.email)
 
             cy.log('Setting region of accident')
             cy.xpath('//span[contains(@id, "select2-event_region")]').click()
-            cy.xpath('//input[@type="search"]').type(obj.placeOfAcc + '{enter}')
+            cy.xpath('//input[@type="search"]').type(data.placeOfAcc + '{enter}')
         })
     })
 
     it('Filling the reason', () => {
-        cy.get('.textarea').type('Temp reason')    
+        cy.fixture('data.json').then(data => {
+            cy.get('.textarea').type(data.reason)
+        })
     })
 
     it('Wait for file to be uploaded', () => {
-        cy.get('#fileupload-input').click()
         cy.log('Upload necessary file please')
-        cy.wait(10000)
+        const fileName = 'Doom.png';
+        const fileType = 'image/png';
+        const fileInput = 'input[type=file]:first-child';
+        cy.uploadFile(fileName, fileType, fileInput)
+        
         cy.log('Waiting for file to be uploaded finally')        
-        cy.get('.half_link', { timeout: 15000 })
+        cy.get('.half_link', { timeout: elementTimeout })
         
         cy.log('Attention! Please provide captcha. Waiting for your input')
     })
     
     it('Passing mailbox check', () => {
-        cy.get('#confirm_but:first-child', { timeout: 20000 }).click()
+        cy.get('#confirm_but:first-child', { timeout: elementTimeout }).click()
         cy.log('Attention! Please provide e-mail confirmation code. Waiting for your input')
-        cy.get('#success > img', {timeout: 20000})
+        cy.contains('Почта подтверждена!', {timeout: elementTimeout})
         cy.log('Mail was confirmed')
     })
 
     it('Checking correctness for the report', () => {
-        //cy.xpath('//label[text()="Корректность введенных данных подтверждаю"]').click()
         cy.get('#correct:first-child').click()
     })
 
